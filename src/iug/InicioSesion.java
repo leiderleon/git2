@@ -3,6 +3,9 @@ package iug;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+
+import persistencia.Conexion;
 
 public class InicioSesion {
     // Creacion de componentes
@@ -19,17 +22,12 @@ public class InicioSesion {
     // configuracion de los componentes
     private void init(){
 
-        Integer cc = 1116789890;
-        String password = "pass5";
 
         JFrame jFrame = new JFrame();
         jFrame.setSize(400,400);
         jFrame.setTitle("Ejercicio git 2");
         jFrame.setVisible(true);
         jFrame.add(main);
-
-        tfcc.setText(String.valueOf(cc));
-        tfPassword.setText(password);
 
         // Boton de Validacion
         btnL.addActionListener(new ActionListener() {
@@ -45,9 +43,19 @@ public class InicioSesion {
                     char[] p = tfPassword.getPassword();
                     String validarPass = String.valueOf(p);
 
+                    String consulta = "SELECT * FROM usuario Where cc = "+Integer.valueOf(tfcc.getText())+" and contraseña = '"+validarPass+"'";
+                    Conexion conexion = new Conexion();
+                    Connection con = conexion.getConexion();
+                    String[] result = conexion.validar(consulta);
+                    conexion.cerrarConec();
+
+                    Integer cc = Integer.valueOf(result[0]);
+                    String password = result[2];
+
                     if (Integer.valueOf(tfcc.getText()).equals(cc) && validarPass.equals(password)){
                         System.out.println("Correcto");
                         Welcome n = new Welcome();
+                        n.setNombre(result[1]);
                         jFrame.setVisible(false);
                     }
                     else {
