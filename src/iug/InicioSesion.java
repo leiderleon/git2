@@ -5,16 +5,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class InicioSesion {
+    // Creacion de componentes
     private JTextField tfcc;
-    private JTextField textFieldPass;
     private JButton btnL;
     private JPanel main;
     private JPanel login;
-    private JPasswordField tfpass;
+    private JPasswordField tfPassword;
 
+    // Ejecuta init
     public InicioSesion(){
         init();
     }
+    // configuracion de los componentes
     private void init(){
 
         Integer cc = 1116789890;
@@ -27,14 +29,31 @@ public class InicioSesion {
         jFrame.add(main);
 
         tfcc.setText(String.valueOf(cc));
-        tfpass.setText(password);
+        tfPassword.setText(password);
 
-
+        // Boton de Validacion
         btnL.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Welcome n = new Welcome();
-                jFrame.setVisible(false);
+                // Validar que no esté vacio
+                if (tfcc.getText().isEmpty() || tfPassword.getPassword().length == 0){
+                    tfcc.setText("");
+                    tfPassword.setText("");
+                }
+                else {
+                    // Validar que sean correctos los datos
+                    char[] p = tfPassword.getPassword();
+                    String validarPass = String.valueOf(p);
+
+                    if (Integer.valueOf(tfcc.getText()).equals(cc) && validarPass.equals(password)){
+                        System.out.println("Correcto");
+                        Welcome n = new Welcome();
+                        jFrame.setVisible(false);
+                    }
+                    else {
+                        System.out.println("Incorrecto");
+                    }
+                }
             }
         });
     }
